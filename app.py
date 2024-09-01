@@ -31,15 +31,20 @@ def get_text_chunks(text):
 
 
 def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings()
-    # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
+    # embeddings = OpenAIEmbeddings()
+    embeddings = OllamaEmbeddings(model="nomic-embed-text", show_progress=True)
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
 
 def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI()
-    # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
+    # llm = ChatOpenAI()
+    local_llm = 'hermes3'
+
+llm = ChatOllama(model=local_llm,
+                 keep_alive="3h", 
+                 max_tokens=1024,  
+                 temperature=0.8)
 
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
