@@ -24,7 +24,7 @@ def get_pdf_text(pdf_docs):
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
         separator="\n",
-        chunk_size=2000,
+        chunk_size=3000,
         chunk_overlap=200,
         length_function=len
     )
@@ -45,7 +45,7 @@ def get_conversation_chain(vectorstore):
 
 llm = ChatOllama(model=local_llm,
                  keep_alive="3h", 
-                 max_tokens=1024,  
+                 max_tokens=512,  
                  temperature=0.8)
 
     memory = ConversationBufferMemory(
